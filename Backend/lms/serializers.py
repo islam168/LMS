@@ -35,7 +35,11 @@ class CourseListSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
 
-        if (str(instance.start_day) == str(datetime.date.today()) and str(
+        if (str(instance.start_day) < str(datetime.date.today())) and (
+                str(instance.end_day) < str(datetime.date.today())):
+            representation['discount_confirmation'] = False
+
+        elif (str(instance.start_day) == str(datetime.date.today()) and str(
                 instance.end_day) == str(datetime.date.today())) and representation['discount_confirmation'] is True:
             representation['discount_confirmation'] = True
 
