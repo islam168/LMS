@@ -60,7 +60,7 @@ class CourseListSerializer(serializers.ModelSerializer):
             representation.pop('end_day')
         else:
             discount = int(instance.discount)
-            course_price = int(instance.price) * (1-(discount/100))
+            course_price = (100 - discount) * int(instance.price) // 100
             representation['price'] = course_price
 
         return representation

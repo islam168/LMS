@@ -13,7 +13,7 @@ class Course(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    price = models.DecimalField(max_digits=9, decimal_places=2, default=10000)
+    price = models.IntegerField('Цена кусра: ', default=10000)
     discount = models.IntegerField('Скидка: ', default=10)
     discount_confirmation = models.BooleanField('Начать акцию',default=False)
     start_day = models.DateField('День старта скидок: ', default=default_date)  # По умолчанию начало акции сегодня
