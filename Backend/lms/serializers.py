@@ -28,7 +28,6 @@ class CourseListSerializer(serializers.ModelSerializer):
         fields = ['title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
                   'end_day']
 
-
     '''
     разобраться с методом ниже (to_representation)
     '''
@@ -39,8 +38,14 @@ class CourseListSerializer(serializers.ModelSerializer):
                 str(instance.end_day) < str(datetime.date.today())):
             representation['discount_confirmation'] = False
 
+        elif (str(instance.start_day) < str(datetime.date.today()) and str(
+                instance.end_day) == str(datetime.date.today())) and \
+                representation['discount_confirmation'] is True:
+            representation['discount_confirmation'] = True
+
         elif (str(instance.start_day) == str(datetime.date.today()) and str(
-                instance.end_day) == str(datetime.date.today())) and representation['discount_confirmation'] is True:
+                instance.end_day) == str(datetime.date.today())) and \
+                representation['discount_confirmation'] is True:
             representation['discount_confirmation'] = True
 
         else:
