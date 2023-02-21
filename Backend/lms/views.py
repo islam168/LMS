@@ -26,3 +26,5 @@ class CategoryList(viewsets.ModelViewSet):
 class CategoryDetail(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CourseSerializer
+
+#fdgfdf
