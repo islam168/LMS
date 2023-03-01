@@ -5,6 +5,7 @@ from .serializers import CourseSerializer, CategorySerializer, CourseListSeriali
 from django_filters.rest_framework import DjangoFilterBackend
 
 
+
 class CourseListView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseListSerializer
@@ -27,4 +28,24 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CourseSerializer
 
-#fdgfdf
+
+from django.contrib.auth import get_user_model
+from rest_framework import generics, permissions
+from .serializers import UserSerializer
+from rest_framework.generics import CreateAPIView, UpdateAPIView
+
+User = get_user_model()
+
+class UserCreateView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.AllowAny,)
+
+class UserCreateView(CreateAPIView):
+    serializer_class = UserSerializer
+
+class UserUpdateView(UpdateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    lookup_field = 'id'
+

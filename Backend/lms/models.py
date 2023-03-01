@@ -15,7 +15,7 @@ class Course(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     price = models.IntegerField('Цена кусра: ', default=10000)
     discount = models.IntegerField('Скидка: ', default=10)
-    discount_confirmation = models.BooleanField('Начать акцию',default=False)
+    discount_confirmation = models.BooleanField('Начать акцию',default=False) # галочка
     start_day = models.DateField('День старта скидок: ', default=default_date)  # По умолчанию начало акции сегодня
     end_day = models.DateField('День окончания скидок: ',
                                default=default_date + datetime.timedelta(days=1))  # По умолчанию конец акции завтра
