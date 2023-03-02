@@ -2,8 +2,7 @@ from rest_framework import serializers
 from .models import Course, Category
 import datetime
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
-
+from django.contrib.auth import get_user_model, authenticate
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -11,7 +10,6 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
-
 
 class CourseSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=False, read_only=True)
@@ -74,26 +72,32 @@ class CourseListSerializer(serializers.ModelSerializer):
 
 
 
-from django.contrib.auth import get_user_model
-
-
 User = get_user_model()
 
+
+# User Serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email',  'password', 'is_staff', 'is_superuser')
+        fields = ('id', 'username', 'email', 'is_superuser')
 
-    password = serializers.CharField(write_only=True)
+
+# Register Serializer
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password', 'is_superuser')
+        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            username=validated_data['username'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            is_staff=validated_data.get('is_staff', False),
+            username=validated_data.get('username'),
+            email=validated_data.get('email'),
+            password=validated_data.get('password'),
+            first_name=validated_data.get('first_name'),
+            last_name=validated_data.get('last_name'),
         )
         return user
 
@@ -111,3 +115,32 @@ class UserSerializer(serializers.ModelSerializer):
         user.is_superuser = is_superuser
         user.save()
         return user
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+
+            if user:
+                if user.is_active:
+                    data['user'] = user
+                else:
+                    raise serializers.ValidationError
+            else:
+                raise serializers.ValidationError
+        else:
+            raise serializers.ValidationError
+
+        return data
+
+
+
+
+
+

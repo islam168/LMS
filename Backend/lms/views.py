@@ -1,9 +1,13 @@
 from rest_framework import filters, viewsets
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView, UpdateAPIView
 from .models import Course, Category
-from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer
+from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer,UserSerializer, RegisterSerializer, LoginSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework import generics
+from rest_framework.response import Response
+from knox.models import AuthToken
+from rest_framework import permissions
+from django.contrib.auth import get_user_model
 
 
 class CourseListView(viewsets.ModelViewSet):
@@ -29,12 +33,34 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = CourseSerializer
 
 
-from django.contrib.auth import get_user_model
-from rest_framework import generics, permissions
-from .serializers import UserSerializer
-from rest_framework.generics import CreateAPIView, UpdateAPIView
 
 User = get_user_model()
+
+# Register API
+class RegisterAPI(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
+        })
+
+class LoginAPI(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        _, token = AuthToken.objects.create(user)
+        return Response({
+            "user": UserSerializer(user).data,
+            "token": token
+        })
 
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
