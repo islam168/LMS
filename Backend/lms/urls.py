@@ -12,5 +12,4 @@ urlpatterns = [
     path('categories/', CategoryList.as_view({'get': 'list',
                                               'post': 'create'}), name='category_list'),
 
-
 ]

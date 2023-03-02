@@ -5,7 +5,6 @@ from .serializers import CourseSerializer, CategorySerializer, CourseListSeriali
 from django_filters.rest_framework import DjangoFilterBackend
 
 
-
 class CourseListView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseListSerializer
@@ -19,19 +18,6 @@ class CourseView(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
 
 
-
-
-# class CourseListView(ListCreateAPIView):
-#     queryset = Course.objects.all()
-#     serializer_class = CourseSerializer
-#
-#
-# class DetailView(RetrieveUpdateAPIView):
-#     queryset = Course.objects.all()
-#     serializer_class = CourseSerializer
-#
-
-
 class CategoryList(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -41,6 +27,4 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CourseSerializer
 
-
-
-
+#fdgfdf
