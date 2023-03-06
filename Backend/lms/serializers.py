@@ -25,7 +25,7 @@ class CourseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
+        fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
                   'end_day']
 
     '''
@@ -79,7 +79,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'is_superuser')
+        fields = ('id', 'username', 'email','first_name', 'last_name', 'is_superuser')
 
 
 # Register Serializer
@@ -131,13 +131,17 @@ class LoginSerializer(serializers.Serializer):
                 if user.is_active:
                     data['user'] = user
                 else:
-                    raise serializers.ValidationError
+                    msg = 'Учетная запись пользователя отключена.'
+                    raise serializers.ValidationError(msg)
             else:
-                raise serializers.ValidationError
+                msg = 'евозможно войти в систему с предоставленными учетными данными'
+                raise serializers.ValidationError(msg)
         else:
-            raise serializers.ValidationError
+            msg = 'Должно включать "имя пользователя" и "пароль".'
+            raise serializers.ValidationError(msg)
 
         return data
+
 
 
 

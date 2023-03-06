@@ -3,11 +3,14 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView,
 from .models import Course, Category
 from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer,UserSerializer, RegisterSerializer, LoginSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics
-from rest_framework.response import Response
 from knox.models import AuthToken
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
+from rest_framework import generics
+from .serializers import CourseSerializer
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 class CourseListView(viewsets.ModelViewSet):
@@ -62,16 +65,62 @@ class LoginAPI(generics.GenericAPIView):
             "token": token
         })
 
-class UserCreateView(generics.CreateAPIView):
+class UserListCreateAPIView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
-class UserCreateView(CreateAPIView):
-    serializer_class = UserSerializer
-
-class UserUpdateView(UpdateAPIView):
-    serializer_class = UserSerializer
+class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
+    serializer_class = UserSerializer
     lookup_field = 'id'
+    permission_classes = (permissions.IsAuthenticated,)
 
+
+
+# система CRUD
+# создание
+@api_view(['POST'])
+def create_course(request):
+    serializer = CourseSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# читать
+class CourseList(generics.ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+class CourseDetail(generics.RetrieveAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+
+# Редактировать
+@api_view(['PUT'])
+def update_course(request, pk):
+    try:
+        course = Course.objects.get(pk=pk)
+    except Course.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = CourseSerializer(course, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# удалить
+@api_view(['DELETE'])
+def delete_course(request, pk):
+    try:
+        course = Course.objects.get(pk=pk)
+    except Course.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    course.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
