@@ -16,8 +16,17 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
+        fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
                   'end_day']
+
+class CourseCreateSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Course
+        fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
+                  'end_day']
+
 
 # Сериализатор для страницы со списком курсов без возможности их создавать
 class CourseListSerializer(serializers.ModelSerializer):

@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 
+
 class Category(models.Model):
     category_name = models.CharField(max_length=50)
 
@@ -10,8 +11,8 @@ class Category(models.Model):
 
 class Course(models.Model):
     default_date = datetime.date.today()
-    title = models.CharField(max_length=100)
-    content = models.TextField()
+    title = models.CharField('Название', max_length=100)
+    content = models.TextField('Описание')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     price = models.IntegerField('Цена кусра: ', default=10000)
     discount = models.IntegerField('Скидка: ', default=10)
