@@ -1,7 +1,7 @@
 from .views import *
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
-from .views import RegisterAPI, LoginAPI, CourseView, CourseCreateView
+
 from knox import views as knox_views
 
 router = SimpleRouter()
@@ -23,8 +23,8 @@ urlpatterns = [
     path('logout/', knox_views.LogoutView.as_view(), name='logout'),
     #path('logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
 
-    path('course/create/', create_course, name='create_course'),
-    path('course/list/', CourseList.as_view(), name='list_course'),
-    path('course/<int:pk>/update/', update_course, name='update_course'),
-    path('course/<int:pk>/delete/', delete_course, name='delete_course'),
+    # path('course/create/', create_course, name='create_course'),
+    # path('course/list/', CourseList.as_view(), name='list_course'),
+    # path('course/<int:pk>/update/', update_course, name='update_course'),
+    # path('course/<int:pk>/delete/', delete_course, name='delete_course'),
 ]

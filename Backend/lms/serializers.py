@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id', 'category_name']
 
 class CourseSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=False, read_only=True)
@@ -19,9 +19,13 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
                   'end_day']
 
-class CourseCreateSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(many=False, read_only=True)
 
+class CourseCreateSerializer(serializers.ModelSerializer):
+    queryset = Category.objects.all()
+    # datasource = DatasourceSerializer(many=False, read_only=False) , will be uncommented below
+    category = serializers.PrimaryKeyRelatedField(queryset=queryset,
+                                                    read_only=False,
+                                                    many=False)
     class Meta:
         model = Course
         fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
