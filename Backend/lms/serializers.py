@@ -11,6 +11,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'category_name']
 
+
 class CourseSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=False, read_only=True)
 
@@ -84,7 +85,6 @@ class CourseListSerializer(serializers.ModelSerializer):
         return representation
 
 
-
 User = get_user_model()
 
 
@@ -97,37 +97,40 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    user_type = serializers.ChoiceField(choices=('Student', 'Teacher'))
+    is_superuser = serializers.BooleanField(default=False)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password', 'is_superuser')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'user_type', 'is_superuser')
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            username=validated_data.get('username'),
-            email=validated_data.get('email'),
-            password=validated_data.get('password'),
-            first_name=validated_data.get('first_name'),
-            last_name=validated_data.get('last_name'),
+            validated_data['username'],
+            validated_data['email'],
+            validated_data['password'],
+            is_superuser=validated_data.get('is_superuser', False),
+
         )
-        return user
-
-    def create(self, validated_data):
-        is_superuser = validated_data.pop('is_superuser')
-        user = User.objects.create(**validated_data)
-        if is_superuser:
-            user.is_superuser = True
-            user.save()
-        return user
-
-    def update(self, instance, validated_data):
-        is_superuser = validated_data.pop('is_superuser', instance.is_superuser)
-        user = super().update(instance, validated_data)
-        user.is_superuser = is_superuser
+        user.first_name = validated_data.get('first_name', '')
+        user.last_name = validated_data.get('last_name', '')
+        user.set_password(validated_data['password'])
         user.save()
+
+        user_type = validated_data.get('user_type')
+
+        if user_type == 'student':
+            # add student-specific fields to user object
+            pass
+        elif user_type == 'teacher':
+            # add teacher-specific fields to user object
+            pass
+
         return user
+
+
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -147,7 +150,7 @@ class LoginSerializer(serializers.Serializer):
                     msg = 'Учетная запись пользователя отключена.'
                     raise serializers.ValidationError(msg)
             else:
-                msg = 'евозможно войти в систему с предоставленными учетными данными'
+                msg = 'невозможно войти в систему с предоставленными учетными данными'
                 raise serializers.ValidationError(msg)
         else:
             msg = 'Должно включать "имя пользователя" и "пароль".'
