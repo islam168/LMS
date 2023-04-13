@@ -13,10 +13,25 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=False, read_only=True)
+class CourseSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(many=False, read_only=True)
 
     class Meta:
         model = Course
+        fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
+                  'end_day']
+
+
+class CourseCreateSerializer(serializers.ModelSerializer):
+    queryset = Category.objects.all()
+    # datasource = DatasourceSerializer(many=False, read_only=False) , will be uncommented below
+    category = serializers.PrimaryKeyRelatedField(queryset=queryset,
+                                                    read_only=False,
+                                                    many=False)
+    class Meta:
+        model = Course
         fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation','discount', 'start_day',
+        fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
                   'end_day']
 
     def update(self, instance, validated_data):
@@ -75,6 +90,8 @@ class CourseListSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 'title', 'content', 'category', 'price',
                   'discount_confirmation', 'discount', 'start_day', 'end_day']
+        fields = ['id', 'title', 'content', 'category', 'price', 'discount_confirmation', 'discount', 'start_day',
+                  'end_day']
 
     # def update_discount(self, instance):
     #     discount = int(instance.discount)
@@ -159,3 +176,80 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(msg)
 
         return data
+        return representation
+
+
+
+User = get_user_model()
+
+
+# User Serializer
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email','first_name', 'last_name', 'is_superuser')
+
+
+# Register Serializer
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password', 'is_superuser')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data.get('username'),
+            email=validated_data.get('email'),
+            password=validated_data.get('password'),
+            first_name=validated_data.get('first_name'),
+            last_name=validated_data.get('last_name'),
+        )
+        return user
+
+    def create(self, validated_data):
+        is_superuser = validated_data.pop('is_superuser')
+        user = User.objects.create(**validated_data)
+        if is_superuser:
+            user.is_superuser = True
+            user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        is_superuser = validated_data.pop('is_superuser', instance.is_superuser)
+        user = super().update(instance, validated_data)
+        user.is_superuser = is_superuser
+        user.save()
+        return user
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+
+            if user:
+                if user.is_active:
+                    data['user'] = user
+                else:
+                    msg = 'Учетная запись пользователя отключена.'
+                    raise serializers.ValidationError(msg)
+            else:
+                msg = 'евозможно войти в систему с предоставленными учетными данными'
+                raise serializers.ValidationError(msg)
+        else:
+            msg = 'Должно включать "имя пользователя" и "пароль".'
+            raise serializers.ValidationError(msg)
+
+        return data
+
+
+
+

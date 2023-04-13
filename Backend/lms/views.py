@@ -4,6 +4,8 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .models import Course, Category
 from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, \
     RegisterSerializer, LoginSerializer, CourseCreateSerializer
+from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, RegisterSerializer, \
+    LoginSerializer, CourseCreateSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from knox.models import AuthToken
 from rest_framework import permissions
