@@ -27,4 +27,11 @@ urlpatterns = [
     # path('course/list/', CourseList.as_view(), name='list_course'),
     # path('course/<int:pk>/update/', update_course, name='update_course'),
     # path('course/<int:pk>/delete/', delete_course, name='delete_course'),
+
+    #--------------------------------------------------------
+
+
+
+
+
 ]

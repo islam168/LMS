@@ -1,8 +1,8 @@
 from rest_framework import filters, viewsets
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from .models import Course, Category
+from .models import Course, Category, UserProfile, Course, CourseEnrollment
 from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, RegisterSerializer, \
-    LoginSerializer, CourseCreateSerializer
+    LoginSerializer, CourseCreateSerializer,UserPfofileSerialezer
 from django_filters.rest_framework import DjangoFilterBackend
 from knox.models import AuthToken
 from rest_framework import permissions
@@ -12,6 +12,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView
+
 
 
 class CourseListView(viewsets.ModelViewSet):
@@ -132,3 +133,44 @@ def delete_course(request, pk):
 
     course.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+# class UserProfileViewSet(viewsets.ModelViewSet):
+#     """creating and updation profiles"""
+#
+#     serializer_class = serializers.UserProvileSerailezer
+
+
+@api_view(['POST'])
+def enroll_user_in_course(request):
+    user_id = request.data.get('user_id')
+    course_id = request.data.get('course_id')
+
+    user_profile = UserProfile.objects.get(name='user_name')
+    course = Course.objects.get(id=course_id)
+
+    enrollment = CourseEnrollment(user_profile=user_profile, course=course)
+    enrollment.save()
+
+    return Response({'status': 'success'})
+
+
+
+@api_view(['GET'])
+def courses_taken_by_user(request, user_id):
+    user_profile = UserProfile.objects.get(id=user_id)
+    courses_taken = user_profile.courses_taken.all()
+
+    course_list = []
+    for course in courses_taken:
+        course_dict = {
+            'id': course.id,
+            'name': course.name,
+            'start_time': course.start_time,
+            'end_time': course.end_time,
+        }
+        course_list.append(course_dict)
+
+    return Response(course_list)

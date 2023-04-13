@@ -5,6 +5,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model, authenticate
 
 
+#----Profile
+from . import models
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import UserProfile, Course, CourseEnrollment
+#-------------------------------------------
 class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -147,7 +153,7 @@ class LoginSerializer(serializers.Serializer):
                     msg = 'Учетная запись пользователя отключена.'
                     raise serializers.ValidationError(msg)
             else:
-                msg = 'евозможно войти в систему с предоставленными учетными данными'
+                msg = 'Невозможно войти в систему с предоставленными учетными данными'
                 raise serializers.ValidationError(msg)
         else:
             msg = 'Должно включать "имя пользователя" и "пароль".'
@@ -159,5 +165,16 @@ class LoginSerializer(serializers.Serializer):
 
 
 
+
+
+#-------------------------------------------------------------
+#------------------------------------------------
+class UserPfofileSerialezer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = models.UserProfile
+        fields =('id','name','email','course')
+        extra_kwargs ={'id':{'write_only': True}}
 
 

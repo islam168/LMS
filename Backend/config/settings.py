@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # my apps
     'lms',
     'knox',
+
 ]
 
 MIDDLEWARE = [
