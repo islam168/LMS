@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from rest_framework import filters, viewsets
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .models import Course, Category
 from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, RegisterSerializer, \
-    LoginSerializer, CourseCreateSerializer
+    LoginSerializer, CourseCreateSerializer, UserCourseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -11,6 +12,12 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework import generics, permissions
 from knox.models import AuthToken
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from .models import UserCourse
+from rest_framework import viewsets
+from lms.models import Post
+from lms.serializers import PostSerializer
+
+
 
 class CourseListView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
@@ -34,6 +41,10 @@ class CourseDetail(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
+User = get_user_model()
+class UserDetailView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 class CategoryList(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -144,11 +155,13 @@ class CategoryList(viewsets.ModelViewSet):
         return Category.objects.all()
 
 
-from rest_framework import viewsets
-from lms.models import Post
-from lms.serializers import PostSerializer
-
-
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+
+class UserCourseView(viewsets.ModelViewSet):
+    serializer_class = UserCourseSerializer
+    queryset = UserCourse.objects.all()
+
+

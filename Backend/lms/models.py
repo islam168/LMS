@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -26,10 +27,8 @@ class Course(models.Model):
         return self.title
 
 
-from django.db import models
-
-
 class Post(models.Model):
+    #post = models.ForeignKey(Course, on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=255)
     preview = models.FileField(upload_to='posts')
     content = models.TextField()
@@ -40,3 +39,12 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+
+
+
+class UserCourse(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return self.user_id, self.course_id

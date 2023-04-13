@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from .models import Course, Category
+from .models import Course, Category, UserCourse, Post
 import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model, authenticate
+from rest_framework.serializers import ModelSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -159,11 +160,14 @@ class LoginSerializer(serializers.Serializer):
         return data
 
 
-from rest_framework.serializers import ModelSerializer
-from lms.models import Post
-
 
 class PostSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = ('name', 'preview', 'content')
+
+
+class UserCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserCourse
+        fields = '__all__'
