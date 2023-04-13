@@ -1,6 +1,9 @@
+from datetime import date
 from rest_framework import filters, viewsets
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .models import Course, Category
+from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, \
+    RegisterSerializer, LoginSerializer, CourseCreateSerializer
 from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, RegisterSerializer, \
     LoginSerializer, CourseCreateSerializer
 from django_filters.rest_framework import DjangoFilterBackend
@@ -12,6 +15,30 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView
+import threading
+from django.db import connections
+
+print(Course.end_day)
+'''Разобраться с методом ниже'''
+
+
+def update_db():
+    while True:
+        # Получаем все курсы из базы данных
+        courses = Course.objects.all()
+        # Обходим все курсы и обновляем цену
+        for course in courses:
+            if course.discount_confirmation and ((date.today() > course.end_day) is True):
+
+                with connections['default'].cursor() as cursor:
+                    # Обновляем цену курса в базе данных
+                    cursor.execute('UPDATE lms_course SET price = %s, discount_confirmation = %s WHERE id = %s',
+                                   [course.price_before_discount, False, course.id])
+
+
+# Запускаем функцию в отдельном потоке
+t = threading.Thread(target=update_db, daemon=True)
+t.start()
 
 
 class CourseListView(viewsets.ModelViewSet):

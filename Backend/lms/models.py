@@ -14,6 +14,11 @@ class Course(models.Model):
     title = models.CharField('Название', max_length=100, null=False)
     content = models.TextField('Описание', null=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=False)
+
+    price = models.IntegerField('Цена курса: ', null=False)
+    price_before_discount = models.IntegerField(null=False)
+    discount = models.IntegerField('Скидка: ', default=10)
+    discount_confirmation = models.BooleanField('Начать акцию', default=False) # галочка
     price = models.IntegerField('Цена кусра: ', null=False)
     discount = models.IntegerField('Скидка: ', default=10)
     discount_confirmation = models.BooleanField('Начать акцию',default=False) # галочка
