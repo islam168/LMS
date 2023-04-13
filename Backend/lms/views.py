@@ -4,15 +4,13 @@ from .models import Course, Category
 from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, RegisterSerializer, \
     LoginSerializer, CourseCreateSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from knox.models import AuthToken
-from rest_framework import permissions
-from django.contrib.auth import get_user_model
-from rest_framework import generics
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView
-
+from rest_framework import generics, permissions
+from knox.models import AuthToken
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 class CourseListView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
@@ -26,13 +24,16 @@ class CourseView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
+
 class CourseCreateView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseCreateSerializer
 
+
 class CourseDetail(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
 
 class CategoryList(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -44,46 +45,38 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = CourseSerializer
 
 
-
-User = get_user_model()
-
-# Register API
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
+        _, token = AuthToken.objects.create(user)
+
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
+            "token": token
         })
+
 
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+
         _, token = AuthToken.objects.create(user)
+
         return Response({
-            "user": UserSerializer(user).data,
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": token
         })
-
-class UserListCreateAPIView(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'id'
-    permission_classes = (permissions.IsAuthenticated,)
-
 
 
 # система CRUD
@@ -101,6 +94,7 @@ def create_course(request):
 class CourseList(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
 
 class CourseDetail(generics.RetrieveAPIView):
     queryset = Course.objects.all()
@@ -132,3 +126,29 @@ def delete_course(request, pk):
 
     course.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CourseView(viewsets.ModelViewSet):
+    serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated] # Добавление permission
+
+    def get_queryset(self):
+        return Course.objects.all()
+
+
+class CategoryList(viewsets.ModelViewSet):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly] # Добавление permission
+
+    def get_queryset(self):
+        return Category.objects.all()
+
+
+from rest_framework import viewsets
+from lms.models import Post
+from lms.serializers import PostSerializer
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer

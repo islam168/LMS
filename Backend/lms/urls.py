@@ -7,6 +7,7 @@ from knox import views as knox_views
 router = SimpleRouter()
 #router.register('course', CourseView, basename='course')
 router.register('categories', CategoryList, basename='category')
+router.register(r'posts', PostViewSet, basename='posts')
 urlpatterns = [
     path('', include(router.urls)),
 
@@ -21,8 +22,9 @@ urlpatterns = [
     path('register/', RegisterAPI.as_view(), name='register'),
     path('login/', LoginAPI.as_view(), name='login'),
     path('logout/', knox_views.LogoutView.as_view(), name='logout'),
-    #path('logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
+    path('post/', PostViewSet.as_view({'post': 'create'}), name='post'),
 
+    #path('logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
     # path('course/create/', create_course, name='create_course'),
     # path('course/list/', CourseList.as_view(), name='list_course'),
     # path('course/<int:pk>/update/', update_course, name='update_course'),
