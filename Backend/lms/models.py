@@ -20,7 +20,23 @@ class Course(models.Model):
     start_day = models.DateField('День старта скидок: ', default=default_date)  # По умолчанию начало акции сегодня
     end_day = models.DateField('День окончания скидок: ',
                                default=default_date + datetime.timedelta(days=1))  # По умолчанию конец акции завтра
+    user_type = models.CharField(choices=(('Student', 'Student'), ('Teacher', 'Teacher')), max_length=10)
 
     def __str__(self):
         return self.title
 
+
+from django.db import models
+
+
+class Post(models.Model):
+    name = models.CharField(max_length=255)
+    preview = models.FileField(upload_to='posts')
+    content = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'

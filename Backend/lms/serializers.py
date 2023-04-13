@@ -92,7 +92,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email','first_name', 'last_name', 'is_superuser')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'is_superuser')
 
 
 # Register Serializer
@@ -104,7 +104,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'user_type', 'is_superuser')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'user_type', 'is_superuser',)
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -112,11 +112,12 @@ class RegisterSerializer(serializers.ModelSerializer):
             validated_data['email'],
             validated_data['password'],
             is_superuser=validated_data.get('is_superuser', False),
+            
 
         )
         user.first_name = validated_data.get('first_name', '')
         user.last_name = validated_data.get('last_name', '')
-        user.set_password(validated_data['password'])
+
         user.save()
 
         user_type = validated_data.get('user_type')
@@ -129,7 +130,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             pass
 
         return user
-
 
 
 class LoginSerializer(serializers.Serializer):
@@ -159,8 +159,11 @@ class LoginSerializer(serializers.Serializer):
         return data
 
 
+from rest_framework.serializers import ModelSerializer
+from lms.models import Post
 
 
-
-
-
+class PostSerializer(ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('name', 'preview', 'content')

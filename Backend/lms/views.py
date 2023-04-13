@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView
 from rest_framework import generics, permissions
 from knox.models import AuthToken
-
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 class CourseListView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
@@ -126,3 +126,29 @@ def delete_course(request, pk):
 
     course.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CourseView(viewsets.ModelViewSet):
+    serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated] # Добавление permission
+
+    def get_queryset(self):
+        return Course.objects.all()
+
+
+class CategoryList(viewsets.ModelViewSet):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly] # Добавление permission
+
+    def get_queryset(self):
+        return Category.objects.all()
+
+
+from rest_framework import viewsets
+from lms.models import Post
+from lms.serializers import PostSerializer
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
