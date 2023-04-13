@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django_filters',
     # my apps
     'lms',
+    'knox',
+
 ]
 
 MIDDLEWARE = [
@@ -80,8 +82,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'web2_drf_project_db',
+        'USER': 'postgres',
+        'PASSWORD': 'islam2002',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -126,3 +132,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'knox.auth.TokenAuthentication',
+    ]
+}
