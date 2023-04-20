@@ -161,7 +161,7 @@ class MaterialDetailViewSet(viewsets.ModelViewSet):
     queryset = Material.objects.all()
     serializer_class = MaterialSerializer
 
-
 class UserCourseView(viewsets.ModelViewSet):
     serializer_class = UserCourseSerializer
     queryset = UserCourse.objects.all()
+

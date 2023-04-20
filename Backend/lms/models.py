@@ -43,5 +43,3 @@ class UserCourse(models.Model):
 
     def __str__(self):
         return f"UserCourse (user_id={self.user_id.id}, course_id={self.course_id.id})"
-
-
