@@ -1,10 +1,11 @@
-from .views import CourseView, CategoryList, CourseCreateView, CourseDetail, \
+from .views import CourseView, UserCourseView, CategoryList, CourseCreateView, CourseDetail, \
     CourseListView, CategoryDetail, RegisterAPI, LoginAPI, UserDetailView, MaterialViewSet, MaterialDetailViewSet
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 from knox import views as knox_views
 
 router = SimpleRouter()
+router.register(r'usercourse', UserCourseView, basename='profile')
 router.register('categories', CategoryList, basename='category')
 router.register(r'materials', MaterialViewSet, basename='material')
 urlpatterns = [
@@ -28,4 +29,6 @@ urlpatterns = [
                                                               'delete': 'destroy'}), name='material_detail'),
 
     path('course_buy/', UserCourseView.as_view({'get': 'list', 'post': 'create'}), name='profile'),
+    path('user_cabinet/<int:pk>/', UserDetailView.as_view(), name='user-detail'),
+
 ]

@@ -34,4 +34,12 @@ class Material(models.Model):
     content = models.TextField()
 
     def __str__(self):
-        return self.nameZ
+        return self.name
+
+
+class UserCourse(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return f"UserCourse (user_id={self.user_id.id}, course_id={self.course_id.id})"

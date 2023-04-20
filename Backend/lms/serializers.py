@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Category, Material
+from .models import Course, Category, UserCourse, Material
 import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model, authenticate
@@ -67,6 +67,33 @@ class CourseTitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'title']
+# User Serializer
+
+
+class UserSerializer(serializers.ModelSerializer):
+    user_courses = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'is_superuser', 'user_courses')
+
+    def get_user_courses(self, obj):
+        # user_courses = UserCourse.objects.filter(user_id=obj.id)
+        # return UserCourseSerializer(user_courses, many=True).data
+
+        user_courses = UserCourse.objects.filter(user_id=obj.id)
+        user_courses_info = UserCourseSerializer(user_courses, many=True).data
+        user_id = obj.id
+        course_ids = [item['course_id'] for item in user_courses_info if item['user_id'] == user_id]
+        course_list = []
+        flat_list = []
+        for i in course_ids:
+            user_courses = Course.objects.filter(id=i)
+            course_info = CourseTitleSerializer(user_courses, many=True).data
+            course_list.append(course_info)
+            flat_list = [item for sublist in course_list for item in sublist]
+
+        return flat_list
 
 
 # Register Serializer
