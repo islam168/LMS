@@ -1,11 +1,7 @@
 from datetime import date
 from rest_framework import filters, viewsets
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from .models import Course, Category
-from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, \
-    RegisterSerializer, LoginSerializer, CourseCreateSerializer
-from .serializers import CourseSerializer, CategorySerializer, CourseListSerializer, UserSerializer, RegisterSerializer, \
-    LoginSerializer, CourseCreateSerializer
+from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend
 from knox.models import AuthToken
 from rest_framework import permissions
@@ -17,9 +13,6 @@ from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView
 import threading
 from django.db import connections
-
-print(Course.end_day)
-'''Разобраться с методом ниже'''
 
 
 def update_db():
@@ -45,7 +38,7 @@ class CourseListView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseListSerializer
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-    search_fields = ('title', '=category__category_name')
+    search_fields = ('$title', '=category__category_name')
 
 
 # View для страницы со списком курсов с возможности их создавать
@@ -53,13 +46,24 @@ class CourseView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
+
 class CourseCreateView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseCreateSerializer
 
+
 class CourseDetail(RetrieveAPIView):
     queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    serializer_class = CourseDetailSerializer
+
+
+User = get_user_model()
+
+
+class UserDetailView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 
 class CategoryList(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -71,46 +75,39 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = CourseSerializer
 
 
-
-User = get_user_model()
-
 # Register API
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
+        _, token = AuthToken.objects.create(user)
+
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
+            "token": token
         })
+
 
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+
         _, token = AuthToken.objects.create(user)
+
         return Response({
-            "user": UserSerializer(user).data,
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": token
         })
-
-class UserListCreateAPIView(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'id'
-    permission_classes = (permissions.IsAuthenticated,)
-
 
 
 # система CRUD
@@ -124,17 +121,11 @@ def create_course(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# читать
 class CourseList(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-class CourseDetail(generics.RetrieveAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
 
-
-# Редактировать
 @api_view(['PUT'])
 def update_course(request, pk):
     try:
@@ -159,3 +150,14 @@ def delete_course(request, pk):
 
     course.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class MaterialViewSet(viewsets.ModelViewSet):
+    queryset = Material.objects.all()
+    serializer_class = MaterialSerializer
+
+
+class MaterialDetailViewSet(viewsets.ModelViewSet):
+    queryset = Material.objects.all()
+    serializer_class = MaterialSerializer
+
