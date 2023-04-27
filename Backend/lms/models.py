@@ -11,6 +11,7 @@ class Category(models.Model):
 
 
 class Course(models.Model):
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     default_date = datetime.date.today()
     title = models.CharField('Название', max_length=100, null=False, unique=True)
     content = models.TextField('Описание', null=False)

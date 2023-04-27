@@ -2,25 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62dd8a06-f54e-4feb-9b74-773a343ade8e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/asgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/migrations/0002_alter_course_title.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Web_2_LMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Web_2_LMS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +27,10 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/WEB2_project/Web_2_LMS/Backend"
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/test/1/Web_2_LMS/Backend",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PythonContentEntriesConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -55,8 +41,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1676644528062</updated>
+      <workItem from="1681982582120" duration="172000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

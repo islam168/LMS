@@ -166,6 +166,7 @@ class MaterialSerializer(ModelSerializer):
 
 
 class UserCourseSerializer(serializers.ModelSerializer):
+    # user_id = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = UserCourse
         fields = ('user_id', 'course_id')

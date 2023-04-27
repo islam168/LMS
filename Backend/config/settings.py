@@ -24,8 +24,8 @@ SECRET_KEY = 'django-insecure-ff&j694g4+6u*=4r^*ovfmw@eb#ieo6-jit$^#=$qd^0bb(sq&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,8 +82,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'web2_drf_project_db',
+        'USER': 'postgres',
+        'PASSWORD': 'islam2002',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

@@ -1,6 +1,8 @@
 from datetime import date
 from rest_framework import filters, viewsets
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+
+from .permissions import IsOwner
 from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend
 from knox.models import AuthToken
@@ -13,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView
 import threading
 from django.db import connections
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 
 
 def update_db():
@@ -47,9 +50,11 @@ class CourseView(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
 
 
+
 class CourseCreateView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseCreateSerializer
+    # permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
 class CourseDetail(RetrieveAPIView):
@@ -63,16 +68,19 @@ User = get_user_model()
 class UserDetailView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    # permission_classes = (IsOwner,)
 
 
 class CategoryList(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = (IsAdminUser, )
 
 
 class CategoryDetail(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = (IsAdminUser,)
 
 
 # Register API
@@ -161,7 +169,7 @@ class MaterialDetailViewSet(viewsets.ModelViewSet):
     queryset = Material.objects.all()
     serializer_class = MaterialSerializer
 
+
 class UserCourseView(viewsets.ModelViewSet):
     serializer_class = UserCourseSerializer
     queryset = UserCourse.objects.all()
-
