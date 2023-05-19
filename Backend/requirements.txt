@@ -5,10 +5,12 @@ Django==4.2
 django-filter==22.1
 django-rest-knox==4.2.0
 djangorestframework==3.14.0
-psycopg2==2.9.6
+djangorestframework-simplejwt==4.8.0
+psycopg2
+psycopg2-binary==2.9.6
 pycparser==2.21
+PyJWT==2.6.0
+python-dotenv==1.0.0
 pytz==2023.3
 sqlparse==0.4.3
 tzdata==2023.3
-djangorestframework-simplejwt==5.2.2
-PyJWT==2.6.0
