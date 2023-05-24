@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="62dd8a06-f54e-4feb-9b74-773a343ade8e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/asgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/migrations/0002_alter_course_title.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lms/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Web_2_LMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Web_2_LMS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/lms/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/lms/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/lms/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/lms/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -35,18 +33,30 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="2Ls0YAGw4YHflJFMQ3smNvKKlvD" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/WEB2_project/Web_2_LMS/Backend"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/WEB2_first_lesson/Web_2_LMS&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PythonContentEntriesConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -55,8 +65,18 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1676644528062</updated>
+      <workItem from="1684390353703" duration="176000" />
+      <workItem from="1684478048998" duration="149000" />
+      <workItem from="1684478206138" duration="6494000" />
+      <workItem from="1684491301915" duration="644000" />
+      <workItem from="1684492356352" duration="297000" />
+      <workItem from="1684923763024" duration="557000" />
+      <workItem from="1684925044032" duration="1492000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

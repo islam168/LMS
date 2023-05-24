@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'lms',
     'knox',
     'rest_framework_simplejwt',
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
@@ -54,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -82,8 +85,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'web_lms_db',
+        'USER': 'postgres',
+        'PASSWORD': 'islam2002',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -123,7 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_ROOT = 'D:/WEB2_project/Web_2_LMS/Frontend/static'
+MEDIA_ROOT = '../frontend/public'
 MEDIA_URL = ''
 
 # Default primary key field type
@@ -138,6 +145,7 @@ REST_FRAMEWORK = {
         'knox.auth.TokenAuthentication',
     ]
 }
+CORS_ORIGIN_ALLOW_ALL = True
 
 DEFAULTS = {
     'DEFAULT_PARSER_CLASSES': [

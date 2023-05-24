@@ -172,6 +172,7 @@ class UserCourseSerializer(serializers.ModelSerializer):
 
 
 class CourseDetailSerializer(serializers.ModelSerializer):
+    # category = CategorySerializer(many=False, read_only=True)
     course_material = serializers.SerializerMethodField()
 
     class Meta:

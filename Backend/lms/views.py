@@ -1,3 +1,4 @@
+
 from datetime import date
 from rest_framework import filters, viewsets
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
@@ -55,7 +56,6 @@ class CourseCreateView(viewsets.ModelViewSet):
 class CourseDetail(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseDetailSerializer
-
 
 User = get_user_model()
 
