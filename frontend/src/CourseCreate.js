@@ -13,7 +13,7 @@ const BackendDataDisplay = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/course/1/'); // Замените на свой API-эндпоинт
+      const response = await axios.get('http://127.0.0.1:8000/api/course/1/');
       setCourseData(response.data);
     } catch (error) {
       console.error(error);
@@ -27,7 +27,7 @@ const BackendDataDisplay = () => {
         content: updatedContent,
       };
 
-      const response = await axios.put('http://127.0.0.1:8000/api/course/1/', updatedData); // Замените на свой API-эндпоинт и данные
+      const response = await axios.put('http://127.0.0.1:8000/api/course/1/', updatedData); // Замените на ваш API-эндпоинт и данные
       setCourseData(response.data);
     } catch (error) {
       console.error(error);
@@ -58,7 +58,7 @@ const BackendDataDisplay = () => {
           </div>
           <h3>{courseData.price}</h3>
         </div>
-        <button onClick={handleButtonClick}>Send Data</button>
+        <button onClick={handleButtonClick}>Отправить данные</button>
       </header>
     </div>
   );
